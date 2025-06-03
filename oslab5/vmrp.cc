@@ -202,16 +202,16 @@ void Replace::Eclock(void) {
         }
 
         if (!found) {
-            FaultNumber++;
-            // 找到一个没有被访问过的页面进行替换
+            FaultNumber++;  // 缺页次数 +1
+            // 寻找替换页面：优先选择 (used=false, modified=false) 的页面
             while (used[pointer] || modified[pointer]) {
                 if (used[pointer]) {
-                    used[pointer] = false;
+                    used[pointer] = false;  // 清除访问位，给予第二次机会
                 } else if (modified[pointer]) {
-                    modified[pointer] = false;
-                    used[pointer] = true;  // 第二次机会
+                    modified[pointer] = false;  // 清除修改位，但仍保留访问位
+                    used[pointer] = true;       // 转为“已访问但未修改”状态
                 }
-                pointer = (pointer + 1) % FrameNumber;
+                pointer = (pointer + 1) % FrameNumber;  // 指针移动
             }
 
             // 记录被淘汰的页面
@@ -306,6 +306,7 @@ void Replace::Mfu(void) {
     int* frequency = new int[FrameNumber];  // 记录每个页面的使用频率
     int eliminateIndex = 0;                 // 用于记录淘汰页的索引
 
+    // 初始化频率数组和页面帧
     for (int i = 0; i < FrameNumber; i++) {
         frequency[i] = 0;
     }
@@ -326,9 +327,16 @@ void Replace::Mfu(void) {
         if (!found) {
             FaultNumber++;
             // 找到使用频率最高的页面进行替换
-            int maxFreqIndex = 0;
-            for (int i = 1; i < FrameNumber; i++) {
-                if (frequency[i] > frequency[maxFreqIndex]) {
+            int maxFreqIndex = -1;
+            int maxFrequency = -1;
+
+            for (int i = 0; i < FrameNumber; i++) {
+                if (PageFrames[i] == -1) {  // 如果有空位，直接使用
+                    maxFreqIndex = i;
+                    break;
+                }
+                if (frequency[i] > maxFrequency) {
+                    maxFrequency = frequency[i];
                     maxFreqIndex = i;
                 }
             }
