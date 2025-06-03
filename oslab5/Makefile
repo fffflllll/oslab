@@ -1,21 +1,15 @@
-# 定义头文件、源文件和编译参数
-HEAD = vmrp.h
-SRC = vmrp.cc
-OBJ = vmrp.o
-CXX = g++
-CXXFLAGS = -Wall -g -c  # 添加警告和调试信息
+head=vmrp.h
+srcs=vmrp.cc
+objs=vmrp.o
+opts=-w -g -c
 
-# 默认目标：生成可执行文件
 all: vmrp
 
-# 生成可执行文件
-vmrp: $(OBJ)
-	$(CXX) $(OBJ) -o vmrp
+vmrp: $(objs)
+	g++ $(objs) -o vmrp
 
-# 编译源文件为对象文件
-$(OBJ): $(SRC) $(HEAD)
-	$(CXX) $(CXXFLAGS) $(SRC)
+vmrp.o: $(srcs) $(head)
+	g++ $(opts) $(srcs)
 
-# 清理生成的文件
 clean:
-	rm -f *.o vmrp
+	rm vmrp *.o
