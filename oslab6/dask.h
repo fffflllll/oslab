@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include<bits/stdc++.h>
 #include <malloc.h>
 class DiskArm {
 public:
@@ -19,5 +20,5 @@ private:
  int CurrentCylinder; //当前道号
  int SeekDirection; //磁头⽅向
  int SeekNumber; //移臂总数
- int SeekChang; //磁头调头数
+ int SeekChange; //磁头调头数
 };
