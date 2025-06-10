@@ -264,8 +264,9 @@ int main() {
 ```
 
 运行结果如下：
-![alt text](image.png)
 ![alt text](image-1.png)
+![alt text](image.png)
+
 
 ### 算法比较
 1、先来先服务算法（FCFS）
